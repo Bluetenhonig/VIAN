@@ -42,7 +42,9 @@ from PyQt5.QtGui import QPixmap, QIcon
 
 
 from core.data.settings import UserSettings
-from core.gui.main_window import MainWindow, version
+
+from core.gui.main_window import version
+from core2.gui.main_window import MainWindow#, version
 
 DEBUG = os.path.isfile("is_dev.txt")
 MAIN_WINDOW = None

@@ -9,7 +9,7 @@ from core2.container.screenshot import Screenshot, ScreenshotGroup
 from core2.container.segmentation import Segment, Segmentation
 from core2.container.vocabulary import Vocabulary, VocabularyWord
 from core2.container.classification import Classification, ClassificationObject, ClassificationKeyword
-from core2.container.media_descriptor import MediaDescriptor
+from core2.container.media_descriptor import MediaDescriptor, MovieDescriptor, ImagesDescriptor
 
 
 class VIANProject(QObject):
@@ -44,6 +44,11 @@ class VIANProject(QObject):
 
         self.entity_map = dict()        # type: Dict[str, ProjectEntity]
 
+        self.meta = dict()
+
+    def set_media_descriptor(self,m : MediaDescriptor):
+        self.media_descriptor = m
+
     def add_segmentation(self, s:Segmentation):
         """ Adds a segmentation to the project, dispatches a onSegmentationAdded signal"""
         if s not in self.segmentations:
@@ -77,7 +82,8 @@ class VIANProject(QObject):
             screenshot_groups = [s.serialize() for s in self.screenshot_groups],
             segmentations = [s.serialize() for s in self.segmentations],
             classifications = [s.serialize() for s in self.classifications],
-            authors=[s.serialize() for s in self.authors]
+            authors=[s.serialize() for s in self.authors],
+            meta = self.meta
         )
         return d
 
@@ -89,28 +95,20 @@ class VIANProject(QObject):
 
         self.hdf5_file = None
 
-        # self.media_descriptor = MediaDescriptor().deserialize(d['media_descriptor'])
-
         for q in d['screenshot_groups']:
             self.add_screenshot_group(ScreenshotGroup().deserialize(q))
         for q in d['segmentations']:
             self.add_segmentation(Segmentation().deserialize(q))
 
-        # self.svg_annotation_groups = []
-
-        # self.classifications = []  # type: List[Classification]
-        # self.authors = []  # type: List[Contributor]
-        #
-        # self.entity_map = dict()  # type: Dict[str, ProjectEntity]
-
+        self.meta = d['meta']
         pass
 
 
-class Contributor:
+class Contributor(ProjectEntity):
     def __init__(self, name = "New Contributor"):
+        super(Contributor, self).__init__()
         self.uuid = str(uuid4())
         self.name = name
-
 
 
 if __name__ == '__main__':

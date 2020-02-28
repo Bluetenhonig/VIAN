@@ -32,7 +32,6 @@ class ScreenshotGroup(ProjectEntity):
             s.screenshot_group = None
             self.onScreenshotRemoved.emit(s)
 
-
     def serialize(self):
         q = super(ScreenshotGroup, self).serialize()
         q['name'] = self.name

@@ -2,7 +2,9 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 
 from core2.container.annotation import ProjectEntity
 
+
 class Vocabulary(ProjectEntity):
+
     onVocabularyWordAdded = pyqtSignal(object)
     onVocabularyWordRemoved = pyqtSignal(object)
     onVocabularyChanged = pyqtSignal(object)
