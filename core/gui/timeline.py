@@ -1036,8 +1036,6 @@ class TimelineControl(QtWidgets.QWidget):
         if not isinstance(self.item, TimelineDataset):
             self.item.onSelectedChanged.connect(self.on_selected_changed)
 
-
-
     @pyqtSlot(bool)
     def on_selected_changed(self, state):
         self.is_selected = state
