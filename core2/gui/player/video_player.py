@@ -112,9 +112,7 @@ class PlayerVLC(VideoPlayer):
     def release_player(self):
         if self.media_player is not None:
             self.media_player.set_pause(-1)
-            # self.media_player.release()
-            # self.media_player.stop()
-            pass
+
         if self.media is not None:
             self.media.release()
             self.media = None

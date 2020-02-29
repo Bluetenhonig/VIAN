@@ -12,10 +12,11 @@ class MediaDescriptor(ProjectEntity):
 
 class MovieDescriptor(MediaDescriptor):
     """ A Media Descriptor for a movie file """
-    def __init__(self, movie_path = "", movie_title = ""):
+    def __init__(self, movie_path = "", movie_title = "", duration=1000):
         super(MovieDescriptor, self).__init__()
         self.movie_path = movie_path
         self.movie_title = movie_title
+        self.duration = duration
 
 
 class ImagesDescriptor(MediaDescriptor):

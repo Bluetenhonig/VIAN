@@ -12,7 +12,7 @@ class MediaPlayerDock(VIANDockWidget):
     def __init__(self, main_window):
         super(MediaPlayerDock, self).__init__(main_window, "Media Player")
 
-        self.frame = QWidget(self)
+        self.frame = PlayerVLC(self)
         self.setWidget(self.frame)
 
     def open_media(self, descriptor:MediaDescriptor):

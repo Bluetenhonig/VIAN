@@ -1,17 +1,23 @@
 import os
 
+import cv2
+import numpy as np
+
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow, QSplashScreen, QWidget, QFileDialog
 from PyQt5 import uic
 
 # DockWidgets
-from core2.gui.timeline.timelinedock import TimelineDock
+from core2.gui.timeline.timelinedock2 import TimelineDock
 from core2.gui.player.mediaplayerdock import MediaPlayerDock
 from core2.gui.docks.screenshot_manager import ShotManager
 
 from core2.gui.signals import VIANSignals
 
 from core2.container.project import VIANProject, MovieDescriptor
+
+from core.data.computation import frame2ms
+
 
 class MainWindow(QMainWindow):
 
@@ -73,8 +79,6 @@ class MainWindow(QMainWindow):
                 ret.activateWindow()
         return ret
 
-
-
     def create_new_project(self):
         f = QFileDialog.getOpenFileName()[0]
         if not os.path.isfile(f):
@@ -82,6 +86,18 @@ class MainWindow(QMainWindow):
             return
 
         self.project = VIANProject()
+
+
         self.project.set_media_descriptor(MovieDescriptor(f))
+        cap = cv2.VideoCapture(f)
+        cap.get(cv2.CAP_PROP_FPS)
+        cap.get(cv2.CAP_PROP_FRAME_COUNT)
+        duration = frame2ms(cap.get(cv2.CAP_PROP_FRAME_COUNT), cap.get(cv2.CAP_PROP_FPS))
+        self.project.media_descriptor.duration = duration
+
         self.player.open_media(self.project.media_descriptor)
+        self.timeline.timeline.on_loaded(self.project)
         print("OK")
+
+    def get_player(self):
+        return self.player
